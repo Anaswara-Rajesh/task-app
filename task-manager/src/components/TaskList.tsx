@@ -32,22 +32,24 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, status, onEdit, onDel
   const FiEdit = FiEdit2 as React.ElementType;
   const FiTrash = FiTrash2 as React.ElementType;
 
-  useEffect(() => {
-    const entering = new Set<string>();
-    
-    tasks.forEach(task => {
-      if (!exitingTasks.has(task.id)) {
-        entering.add(task.id);
-      }
-    });
-    
-    setEnteringTasks(entering);
-    const timer = setTimeout(() => {
-      setEnteringTasks(new Set());
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, [tasks]);
+useEffect(() => {
+  const entering = new Set<string>();
+
+  tasks.forEach(task => {
+    if (!exitingTasks.has(task.id)) {
+      entering.add(task.id);
+    }
+  });
+
+  setEnteringTasks(entering);
+
+  const timer = setTimeout(() => {
+    setEnteringTasks(new Set());
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [tasks, exitingTasks]);
+
 
   const handleEdit = (taskId: string) => {
     setEditingTaskId(taskId);
